@@ -2,61 +2,58 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-linear-to-br from-[#2744de] to-[#7ca1f9] font-sans px-4 py-6 overflow-y-auto">
+      <main className="flex flex-col items-center justify-start max-w-6xl w-full mx-auto gap-4 md:gap-6">
+        {/* iPhone Mockup - Responsive sizing with max height */}
+        <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[450px] aspect-9/19 flex-shrink-0">
+          <Image
+            src="/compress.png"
+            alt="ImmoPlus App Screenshot"
+            fill
+            className="object-contain drop-shadow-2xl"
+            priority
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
+        
+        {/* App Title */}
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center">
+          Immo Plus
+        </h1>
+        
+        {/* Description */}
+        <p className="text-base sm:text-lg md:text-xl text-white/90 text-center max-w-2xl">
+          Votre plateforme immobilière en Côte d'Ivoire
+        </p>
+        
+        {/* Download Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pb-4">
+          <a 
+            href="https://apps.apple.com/ci/app/immo-plus/id6755297623" 
+            target="_blank" 
             rel="noopener noreferrer"
+            className="transition-transform hover:scale-105"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <Image 
+              src="/download_appstore.svg" 
+              alt="Télécharger sur l'App Store" 
+              width={160} 
+              height={48}
+              className="h-12 w-auto"
             />
-            Deploy Now
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
+          <a 
+            href="https://play.google.com/store/apps/details?id=com.immoplus.ci&pcampaignid=web_share" 
+            target="_blank" 
             rel="noopener noreferrer"
+            className="transition-transform hover:scale-105"
           >
-            Documentation
+            <Image 
+              src="/download_playstore.svg" 
+              alt="Disponible sur Google Play" 
+              width={160} 
+              height={48}
+              className="h-12 w-auto"
+            />
           </a>
         </div>
       </main>
