@@ -6,7 +6,7 @@ export default function VideoPage() {
         Voir cette vidéo sur ImmoPlus
       </h1>
       <p className="text-gray-500 text-center mb-10">
-        Téléchargez l'application pour accéder à cette vidéo et à toutes nos offres immobilières.
+       {" Téléchargez l'application pour accéder à cette vidéo et à toutes nos offres immobilières."}
       </p>
       <div className="flex gap-4">
         <a
