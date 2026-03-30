@@ -15,12 +15,12 @@ export default async function ShortLinkPage({ params }: PageProps) {
     if (!res.ok) return notFound();
 
     const data = await res.json();
-    feedVideoId = data.feedVideoId;
+    feedVideoId = data.entityId;
   } catch {
     return notFound();
   }
 
   if (!feedVideoId) return notFound();
 
-  redirect(`/video/${feedVideoId}`);
+  redirect(`/vivre/${feedVideoId}`);
 }
