@@ -22,7 +22,7 @@ export default function Home() {
         
         {/* Description */}
         <p className="text-base sm:text-lg md:text-xl text-white/90 text-center max-w-2xl">
-          Votre plateforme immobilière en Côte d'Ivoire
+          Votre plateforme immobilière tout en un en Côte d'Ivoire
         </p>
         
         {/* Download Buttons */}
