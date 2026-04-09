@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://app.immoplus.ci'),
   title: "ImmoPlus",
   description: "Plateforme immobilière en Côte d'Ivoire",
   icons: {

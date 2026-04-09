@@ -5,9 +5,7 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata(
-  { params }: PageProps
-): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const id = (await params).id;
   try {
     const { data: video } = await FeedRepository.getById(id);
@@ -16,23 +14,21 @@ export async function generateMetadata(
       || (video.content?.price && video.content?.location
         ? `${video.content.price} — ${video.content.location}`
         : 'Découvrez cette vidéo sur ImmoPlus');
-    const image = video.thumbnailUrl || '/icon.jpg';
-
     return {
       title: `${title} | ImmoPlus`,
       description,
       openGraph: {
         title,
         description,
-        images: [image],
-        type: 'video.other',
+        url: `https://app.immoplus.ci/vivre/${id}`,
         siteName: 'ImmoPlus',
+        locale: 'fr_CI',
+        type: 'video.other',
       },
       twitter: {
         card: 'summary_large_image',
         title,
         description,
-        images: [image],
       },
     };
   } catch {
