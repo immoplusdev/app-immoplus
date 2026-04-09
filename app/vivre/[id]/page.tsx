@@ -1,18 +1,84 @@
-export default function VideoPage() {
+import { Metadata } from 'next';
+import { FeedRepository } from '@/repositories/feed.repository';
+import { getImageUrl } from '@/providers/api';
+
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata(
+  { params }: PageProps
+): Promise<Metadata> {
+  const id = (await params).id;
+  try {
+    const { data: video } = await FeedRepository.getById(id);
+    const imageUrl = getImageUrl(video.miniature);
+
+    return {
+      title: `${video.titre} | ImmoPlus`,
+      description: video.description?.slice(0, 160) || "Découvrez cette vidéo sur ImmoPlus",
+      openGraph: {
+        title: video.titre,
+        description: video.description?.slice(0, 160) || "Découvrez cette vidéo sur ImmoPlus",
+        images: [imageUrl || '/icon.jpg'],
+        type: 'video.other',
+        siteName: 'ImmoPlus',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: video.titre,
+        description: video.description?.slice(0, 160) || "Découvrez cette vidéo sur ImmoPlus",
+        images: [imageUrl || '/icon.jpg'],
+      },
+    };
+  } catch {
+    return {
+      title: 'Voir une vidéo | ImmoPlus',
+      description: 'Découvrez des contenus exclusifs sur ImmoPlus.',
+      openGraph: {
+        title: 'ImmoPlus - Feed',
+        description: 'Découvrez des contenus exclusifs sur ImmoPlus.',
+        images: ['/icon.jpg'],
+      }
+    };
+  }
+}
+
+export default async function VideoPage({ params }: PageProps) {
+  const id = (await params).id;
+  
+  let video;
+  try {
+    const response = await FeedRepository.getById(id);
+    video = response.data;
+  } catch {
+    // Falls back to showing generic download page if video fetch fails
+  }
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-white px-6">
-      <img src="/icon.jpg" alt="ImmoPlus" className="w-20 h-20 rounded-2xl mb-6" />
-      <h1 className="text-2xl font-semibold text-gray-900 mb-2 text-center">
-        Voir cette vidéo sur ImmoPlus
+      <img src={video?.miniature ? getImageUrl(video.miniature) : "/icon.jpg"} alt="ImmoPlus" className="w-40 h-40 object-cover rounded-2xl mb-6 shadow-lg" />
+      
+      <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center max-w-md">
+        {video?.titre || "Voir cette vidéo sur ImmoPlus"}
       </h1>
+      
+      {video?.description && (
+        <p className="text-gray-600 text-center mb-4 max-w-sm line-clamp-3">
+          {video.description}
+        </p>
+      )}
+
       <p className="text-gray-500 text-center mb-10">
-       {" Téléchargez l'application pour accéder à cette vidéo et à toutes nos offres immobilières."}
+        {"Téléchargez l'application pour accéder à cette vidéo et à toutes nos offres immobilières."}
       </p>
-      <div className="flex gap-4">
+
+      <div className="flex flex-col sm:flex-row gap-4">
         <a
           href="https://apps.apple.com/ci/app/immo-plus/id6755297623"
           target="_blank"
           rel="noopener noreferrer"
+          className="transition-transform hover:scale-105"
         >
           <img src="/download_appstore.svg" alt="Télécharger sur l'App Store" className="h-12" />
         </a>
@@ -20,6 +86,7 @@ export default function VideoPage() {
           href="https://play.google.com/store/apps/details?id=com.immoplus.ci&pcampaignid=web_share"
           target="_blank"
           rel="noopener noreferrer"
+          className="transition-transform hover:scale-105"
         >
           <img src="/download_playstore.svg" alt="Disponible sur Google Play" className="h-12" />
         </a>
