@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { FeedRepository } from '@/repositories/feed.repository';
-import { getImageUrl } from '@/providers/api';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -12,23 +11,28 @@ export async function generateMetadata(
   const id = (await params).id;
   try {
     const { data: video } = await FeedRepository.getById(id);
-    const imageUrl = getImageUrl(video.miniature);
+    const title = video.content?.title || 'Voir cette vidéo sur ImmoPlus';
+    const description = video.content?.description?.slice(0, 160)
+      || (video.content?.price && video.content?.location
+        ? `${video.content.price} — ${video.content.location}`
+        : 'Découvrez cette vidéo sur ImmoPlus');
+    const image = video.thumbnailUrl || '/icon.jpg';
 
     return {
-      title: `${video.titre} | ImmoPlus`,
-      description: video.description?.slice(0, 160) || "Découvrez cette vidéo sur ImmoPlus",
+      title: `${title} | ImmoPlus`,
+      description,
       openGraph: {
-        title: video.titre,
-        description: video.description?.slice(0, 160) || "Découvrez cette vidéo sur ImmoPlus",
-        images: [imageUrl || '/icon.jpg'],
+        title,
+        description,
+        images: [image],
         type: 'video.other',
         siteName: 'ImmoPlus',
       },
       twitter: {
         card: 'summary_large_image',
-        title: video.titre,
-        description: video.description?.slice(0, 160) || "Découvrez cette vidéo sur ImmoPlus",
-        images: [imageUrl || '/icon.jpg'],
+        title,
+        description,
+        images: [image],
       },
     };
   } catch {
@@ -39,14 +43,14 @@ export async function generateMetadata(
         title: 'ImmoPlus - Feed',
         description: 'Découvrez des contenus exclusifs sur ImmoPlus.',
         images: ['/icon.jpg'],
-      }
+      },
     };
   }
 }
 
 export default async function VideoPage({ params }: PageProps) {
   const id = (await params).id;
-  
+
   let video;
   try {
     const response = await FeedRepository.getById(id);
@@ -57,15 +61,19 @@ export default async function VideoPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-white px-6">
-      <img src={video?.miniature ? getImageUrl(video.miniature) : "/icon.jpg"} alt="ImmoPlus" className="w-40 h-40 object-cover rounded-2xl mb-6 shadow-lg" />
-      
+      <img
+        src={video?.thumbnailUrl || '/icon.jpg'}
+        alt="ImmoPlus"
+        className="w-40 h-40 object-cover rounded-2xl mb-6 shadow-lg"
+      />
+
       <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center max-w-md">
-        {video?.titre || "Voir cette vidéo sur ImmoPlus"}
+        {video?.content?.title || 'Voir cette vidéo sur ImmoPlus'}
       </h1>
-      
-      {video?.description && (
+
+      {video?.content?.description && (
         <p className="text-gray-600 text-center mb-4 max-w-sm line-clamp-3">
-          {video.description}
+          {video.content.description}
         </p>
       )}
 

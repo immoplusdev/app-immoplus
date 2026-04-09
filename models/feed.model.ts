@@ -1,11 +1,20 @@
+export interface FeedVideoContent {
+  title: string;
+  description: string;
+  price?: string;
+  location?: string;
+}
+
 export interface FeedVideo {
   id: string;
-  titre: string;
-  description: string;
-  miniature: string; // The thumbnail ID
-  video: string;     // The video ID
+  source: string;
+  videoUrl: string;
+  videoType: string;
+  thumbnailUrl: string;
+  status: string;
+  content: FeedVideoContent;
+  shortCode: string;
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface FeedVideoResponse {
